@@ -21,6 +21,11 @@ class HomeController extends GetxController {
 
   bool isCategorybyProductsLoding = false;
 
+  bool isPostproductLoding = false;
+
+  bool isProductupdateLoding = false;
+  bool isProductdeleteLoding = false;
+
   @override
   void onInit() {
     homeService = HomeService();
@@ -29,6 +34,70 @@ class HomeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
   }
+
+  void postProduct(Map<String, dynamic> product) async {
+    try {
+      isPostproductLoding = true;
+      update();
+
+      http.Response response = await homeService.postProducts(product);
+
+      if (response.statusCode == 201) {
+        print(response.body);
+        isPostproductLoding = false;
+        update();
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+  void updateProduct(Map<String, dynamic> product,String Id) async {
+    try {
+      isProductupdateLoding  = true;
+      update();
+
+      http.Response response = await homeService.updateProducts(product, Id);
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        isProductupdateLoding  = false;
+        update();
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+  void deleteProduct(String Id) async {
+    try {
+      isProductdeleteLoding = true;
+      update();
+
+      http.Response response = await homeService.deleteProducts(Id);
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        isProductdeleteLoding = false;
+        update();
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+
 
   void getProducts() async {
     try {
@@ -54,9 +123,11 @@ class HomeController extends GetxController {
     try {
       isCategorybyProductsLoding = true;
       update();
-      http.Response response = await homeService.getProductsbyCategoris(category);
-      var data=jsonDecode(response.body);
-      for(int i=0;i<data.length;i++){
+      http.Response response = await homeService.getProductsbyCategoris(
+        category,
+      );
+      var data = jsonDecode(response.body);
+      for (int i = 0; i < data.length; i++) {
         productsbycategory.add(ProductModel.fromJson(data[i]));
       }
 
@@ -64,7 +135,6 @@ class HomeController extends GetxController {
 
       isCategorybyProductsLoding = false;
       update();
-
     } catch (e) {
       print(e);
       isCategorybyProductsLoding = false;

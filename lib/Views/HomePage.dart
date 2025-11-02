@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:myapp/Views/ActionsPage.dart';
 import 'package:myapp/Controllers/Controller.dart';
 import 'package:myapp/Models/ProductModel.dart';
 import 'package:myapp/Views/Products_details_page.dart';
@@ -16,7 +17,23 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Products")),
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: InkWell(
+              onTap: (){
+                Get.to(Actionspage());
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.deepOrange,
+                radius: 14,
+                child: Icon(Icons.add,color: Colors.white,),
+              ),
+            ),
+          )
+        ],
+          title: Text("Products")),
       body: Column(
         children: [
           SizedBox(
